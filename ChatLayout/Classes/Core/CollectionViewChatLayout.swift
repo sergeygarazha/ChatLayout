@@ -33,7 +33,7 @@ import UIKit
 /// `CollectionViewChatLayout.getContentOffsetSnapshot(...)`
 ///
 /// `CollectionViewChatLayout.restoreContentOffset(...)`
-public open class CollectionViewChatLayout: UICollectionViewLayout {
+public final class CollectionViewChatLayout: UICollectionViewLayout {
 
     // MARK: Custom Properties
 
@@ -419,7 +419,28 @@ public open class CollectionViewChatLayout: UICollectionViewLayout {
         }
 
         let visibleAttributes = controller.layoutAttributesForElements(in: rect, state: state)
-        return visibleAttributes
+
+
+
+        let attributes = visibleAttributes
+
+        guard let collectionView else {
+            return nil
+        }
+
+        guard collectionViewContentSize.height < collectionView.frame.height else {
+            return attributes
+        }
+
+        var offset: CGFloat = collectionView.frame.height - collectionView.safeAreaInsets.top - collectionView.safeAreaInsets.bottom
+        for item in attributes.reversed() {
+            offset -= item.frame.height + settings.interItemSpacing
+            var frame = item.frame
+            frame.origin.y = offset
+            item.frame = frame
+        }
+
+        return attributes
     }
 
     /// Retrieves layout information for an item at the specified index path with a corresponding cell.
