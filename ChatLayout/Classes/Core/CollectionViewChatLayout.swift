@@ -33,7 +33,7 @@ import UIKit
 /// `CollectionViewChatLayout.getContentOffsetSnapshot(...)`
 ///
 /// `CollectionViewChatLayout.restoreContentOffset(...)`
-public final class CollectionViewChatLayout: UICollectionViewLayout {
+public open class CollectionViewChatLayout: UICollectionViewLayout {
 
     // MARK: Custom Properties
 
